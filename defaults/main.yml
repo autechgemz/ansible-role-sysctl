@@ -11,6 +11,8 @@ sysctl_dropin_config_options: {}
   #   value: ...
   #   state: present|absent
 
+sysctl_dropin_config_purge: false
+
 sysctl_config_reload: true
 
 sysctl_config_persistent: true

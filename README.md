@@ -48,6 +48,12 @@ sysctl_dropin_config_options: {}
 #   state: present|absent
 ```
 
+### sysctl_dropin_config_purge: (bool)
+
+```
+sysctl_dropin_config_purge: false
+```
+
 ### sysctl_config_reload: (bool)
 
 ```

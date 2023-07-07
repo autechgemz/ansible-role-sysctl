@@ -5,6 +5,23 @@
     - sysctl_config
     - sysctl
   block:
+
+    - name: Manage dropin sysctl config directory
+      ansible.builtin.file:
+        path: "{{ sysctl_config_dir | default('/etc/sysctl.d') }}"
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Purge dropin config directory
+      when:
+        - sysctl_dropin_config_purge is defined and sysctl_dropin_config_purge
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+      ansible.builtin.file:
+        path: "{{ sysctl_config_dir | default('/etc/sysctl.d') }}/*"
+        state: absent
+
     - name: Debug include
       when: sysctl_debug is defined and sysctl_debug
       ansible.builtin.include_tasks: debug/dropin.yml

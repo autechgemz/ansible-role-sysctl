@@ -19,19 +19,3 @@
         reload: "{{ sysctl_config_reload | default(true) }}"
         sysctl_set: "{{ sysctl_config_persistent | default(true) }}"
       with_dict: "{{ sysctl_config_options }}"
-
-    - name: Manage dropin sysctl config directory
-      ansible.builtin.file:
-        path: "{{ sysctl_config_dir | default('/etc/sysctl.d') }}"
-        owner: root
-        group: root
-        mode: 0755
-        state: directory
-
-    - name: Purge dropin config directory
-      when:
-        - sysctl_dropin_config_purge is defined and sysctl_dropin_config_purge
-        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
-      ansible.builtin.file:
-        path: "{{ sysctl_config_dir | default('/etc/sysctl.d') }}/*"
-        state: absent
