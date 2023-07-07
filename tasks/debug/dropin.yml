@@ -1,0 +1,4 @@
+---
+- name: Debug print
+  ansible.builtin.debug:
+    var: sysctl_dropin_config_options

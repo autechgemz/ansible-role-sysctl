@@ -1,0 +1,20 @@
+---
+
+- name: Sysctl tasks
+  tags: sysctl
+  block:
+    - name: Set dependency variables
+      ansible.builtin.include_vars: "{{ item }}"
+      loop:
+        - common.yml
+    - name: Configration tasks
+      when: sysctl_config_options is defined and sysctl_config_options
+      ansible.builtin.import_tasks: config.yml
+    - name: Dropin configration tasks
+      when: sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+      ansible.builtin.import_tasks: dropin.yml
+  rescue:
+    - name: Print Error
+      ansible.builtin.debug:
+        msg: "Unsupport platform or error occurred due to some reason."
+      failed_when: true

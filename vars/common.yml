@@ -1,0 +1,5 @@
+---
+
+sysctl_config_file: /etc/sysctl.conf
+
+sysctl_dropin_config_dir: /etc/sysctl.d

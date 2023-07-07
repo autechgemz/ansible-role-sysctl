@@ -1,0 +1,4 @@
+---
+- name: Debug Print
+  ansible.builtin.debug:
+    var: sysctl_config_options

@@ -1,0 +1,9 @@
+galaxy_info:
+  role_name: sysctl
+  namespace: autechgemz
+  author: "autechgemz@gmail.com"
+  description: "Manage sysctl kernel parameters"
+  license: MIT
+  min_ansible_version: "1.2"
+  galaxy_tags: []
+dependencies: []

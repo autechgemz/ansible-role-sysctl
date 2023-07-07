@@ -1,0 +1,33 @@
+---
+- name: Dropin configration tasks
+  become: true
+  tags:
+    - sysctl_config
+    - sysctl
+  block:
+    - name: Debug include
+      when: sysctl_debug is defined and sysctl_debug
+      ansible.builtin.include_tasks: debug/dropin.yml
+
+    - name: Manage dropin sysctl config
+      when:
+        - item.value.file is defined and item.value.file
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value.value | default(item.value) }}"
+        sysctl_file: "{{ sysctl_dropin_config_dir }}/{{ item.value.file }}"
+        state: "{{ item.value.state | default('absent') }}"
+        reload: "{{ sysctl_config_reload | default(true) }}"
+        sysctl_set: "{{ sysctl_config_persistent | default(true) }}"
+      with_dict: "{{ sysctl_dropin_config_options }}"
+
+    - name: Absent dropin sysctl config
+      when:
+        - item.value.file is defined and item.value.file
+        - item.value.state is defined and item.value.state == 'absent'
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+      ansible.builtin.file:
+        path: "{{ sysctl_dropin_config_dir }}/{{ item.value.file }}"
+        state: absent
+      with_dict: "{{ sysctl_dropin_config_options }}"
