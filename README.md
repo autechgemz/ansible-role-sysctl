@@ -71,6 +71,8 @@ sysctl_config_persistent: true
 ```
 sysctl_config_options:
   net.ipv4.ip_forward:
+    value: 0
+    state: present
   vm.stat_interval:
     value: 1
     state: present
