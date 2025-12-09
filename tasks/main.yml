@@ -8,10 +8,10 @@
       loop:
         - common.yml
     - name: Configration tasks
-      when: sysctl_config_options is defined and sysctl_config_options
+      when: sysctl_config_options is defined and sysctl_config_options | length > 0
       ansible.builtin.import_tasks: config.yml
     - name: Dropin configration tasks
-      when: sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+      when: sysctl_dropin_config_options is defined and sysctl_dropin_config_options | length > 0
       ansible.builtin.import_tasks: dropin.yml
   rescue:
     - name: Print Error
