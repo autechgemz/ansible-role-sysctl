@@ -10,7 +10,7 @@
       ansible.builtin.include_tasks: debug/config.yml
 
     - name: Manage main sysctl config
-      when: sysctl_config_options is defined and sysctl_config_options
+      when: sysctl_config_options is defined and sysctl_config_options | length > 0
       ansible.posix.sysctl:
         name: "{{ item.key }}"
         value: "{{ item.value.value | default(item.value) }}"
