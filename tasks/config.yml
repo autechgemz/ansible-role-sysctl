@@ -6,7 +6,7 @@
     - sysctl
   block:
     - name: Debug include
-      when: sysctl_debug is defined and sysctl_debug
+      when: sysctl_debug is defined and sysctl_debug | bool
       ansible.builtin.include_tasks: debug/config.yml
 
     - name: Manage main sysctl config

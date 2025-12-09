@@ -16,20 +16,20 @@
 
     - name: Purge dropin config directory
       when:
-        - sysctl_dropin_config_purge is defined and sysctl_dropin_config_purge
-        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+        - sysctl_dropin_config_purge is defined and sysctl_dropin_config_purge | bool
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options | length > 0
       ansible.builtin.file:
         path: "{{ sysctl_config_dir | default('/etc/sysctl.d') }}/*"
         state: absent
 
     - name: Debug include
-      when: sysctl_debug is defined and sysctl_debug
+      when: sysctl_debug is defined and sysctl_debug | bool
       ansible.builtin.include_tasks: debug/dropin.yml
 
     - name: Manage dropin sysctl config
       when:
         - item.value.file is defined and item.value.file
-        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options | length > 0
       ansible.posix.sysctl:
         name: "{{ item.key }}"
         value: "{{ item.value.value | default(item.value) }}"
@@ -43,7 +43,7 @@
       when:
         - item.value.file is defined and item.value.file
         - item.value.state is defined and item.value.state == 'absent'
-        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options
+        - sysctl_dropin_config_options is defined and sysctl_dropin_config_options | length > 0
       ansible.builtin.file:
         path: "{{ sysctl_dropin_config_dir }}/{{ item.value.file }}"
         state: absent
